@@ -6,8 +6,27 @@ import Projects from './pages/Projects';
 import Contact from './pages/Contact';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import { useCallback, useEffect } from 'react';
 
 function App() {
+  const defaultTitle = document.title;
+  const handleVisibilityChange = useCallback(() => {
+    if (document.hidden) {
+      document.title = `${defaultTitle} (╥﹏╥)`;
+    } else {
+      document.title = `${defaultTitle} ◝(ᵔᗜᵔ)◜`;
+    }
+  }, [defaultTitle]);
+
+  useEffect(() => {
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [handleVisibilityChange]);
+
+  useEffect(() => handleVisibilityChange(), []);
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
